@@ -15,12 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp\
         finddialog.cpp \
-    gotocelldialog.cpp
+    gotocelldialog.cpp \
+    sortdialog.cpp
 
 HEADERS  += mainwindow.h\
         finddialog.h \
-    gotocelldialog.h
+    gotocelldialog.h \
+    sortdialog.h
 
 FORMS    += mainwindow.ui\
         finddialog.ui \
-    gotocelldialog.ui
+    gotocelldialog.ui \
+    sortdialog.ui
