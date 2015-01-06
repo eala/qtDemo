@@ -15,14 +15,27 @@ TEMPLATE = app
 SOURCES += main.cpp\
         finddialog.cpp \
     gotocelldialog.cpp \
-    sortdialog.cpp
+    sortdialog.cpp \
+    mainwindow.cpp \
+    spreadsheet.cpp
 
 HEADERS  +=\
         finddialog.h \
     gotocelldialog.h \
-    sortdialog.h
+    sortdialog.h \
+    mainwindow.h \
+    spreadsheet.h
 
 FORMS    +=\
         finddialog.ui \
     gotocelldialog.ui \
     sortdialog.ui
+
+install_bin.path = $$OUT_PWD
+install_bin.files = bin/images/*
+
+INSTALLS += \
+    install_bin
+
+RESOURCES += \
+    demomainwindow.qrc

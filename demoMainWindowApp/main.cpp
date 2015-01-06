@@ -13,9 +13,11 @@ int main(int argc, char *argv[])
     //findDlg.show();
     //gotoCellDialog *gotoCellDlg = new gotoCellDialog;
     //gotoCellDlg->show();
-    sortDialog *sortDlg = new sortDialog;
-    sortDlg->setColumnRange('C', 'F');
-    sortDlg->show();
+    //sortDialog *sortDlg = new sortDialog;
+    //sortDlg->setColumnRange('C', 'F');
+    //sortDlg->show();
+    mainWindow *window = new mainWindow;
+    window->show();
 
     return a.exec();
 }
