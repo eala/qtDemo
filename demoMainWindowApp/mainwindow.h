@@ -21,7 +21,7 @@ private slots:
     void newFile();
     void open();
     bool save();
-    void saveAs();
+    bool saveAs();
     void openRecentFile();
 
     void find();
@@ -45,6 +45,7 @@ private:
     bool saveFile(const QString &fileName);
     void setCurrentFile(const QString &fileName);
     void updateRecentFileActions();
+    void displayStatusBar(const QString &str);
     QString strippedName(const QString &fullFileName);
 
 protected:
@@ -65,6 +66,7 @@ private:
     QAction *separatorAction;
     QAction *saveAction;
     QAction *saveAsAction;
+    QAction *closeAction;
     QAction *exitAction;
 
     // edit menu
@@ -82,19 +84,19 @@ private:
     QAction *gotoCellAction;
 
     // tool menu
-    QAction *recalculateAction;
+    QAction *autoRecalcAction;
     QAction *sortAction;
     QAction *showGridAction;
 
     // about menu
-    QAction *aboutAction;
-    QAction *aboutQtAction;
+    QAction *myAboutAction;
+    QAction *myAboutQtAction;
 
 
     QMenu *fileMenu;
     QMenu *editMenu;
     QMenu *toolsMenu;
-    QMenu *helpMenu;
+    QMenu *myHelpMenu;
     QMenu *selectSubMenu;
 
     QToolBar *fileToolBar;

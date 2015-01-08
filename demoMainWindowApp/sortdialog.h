@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ui_sortdialog.h"
+#include "spreadsheet.h"
 
 class sortDialog : public QDialog, public Ui::sortDialog
 {
@@ -11,6 +12,10 @@ class sortDialog : public QDialog, public Ui::sortDialog
 public:
     sortDialog(QWidget *parent = 0);
     void setColumnRange(QChar first, QChar last);
+    void setSpreadsheet(spreadsheet *sheet){mSpreadsheet = sheet;}
+
+private:
+    spreadsheet *mSpreadsheet;
 };
 
 #endif // SORTDIALOG_H
