@@ -18,7 +18,7 @@ SOURCES += main.cpp\
     sortdialog.cpp \
     mainwindow.cpp \
     spreadsheet.cpp \
-    spreadsheetcompare.cpp
+    cell.cpp
 
 HEADERS  +=\
         finddialog.h \
@@ -26,7 +26,7 @@ HEADERS  +=\
     sortdialog.h \
     mainwindow.h \
     spreadsheet.h \
-    spreadsheetcompare.h
+    cell.h
 
 FORMS    +=\
         finddialog.ui \

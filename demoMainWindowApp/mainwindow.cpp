@@ -14,7 +14,6 @@
 #include "gotocelldialog.h"
 #include "sortdialog.h"
 #include "spreadsheet.h"
-#include "spreadsheetcompare.h"
 
 //mainWindow::mainWindow(QWidget *parent) : QMainWindow(parent)
 mainWindow::mainWindow()
