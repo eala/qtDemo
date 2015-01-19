@@ -8,7 +8,8 @@ gotoCellDialog::gotoCellDialog(QWidget *parent) :
     setupUi(this);
     buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
-    QRegExp regExp("[A-Za-z]");
+    // Important: QRegExp {a,b}: you cannot put any white space delimiter between a,b
+    QRegExp regExp("[A-Za-z][1-9][0-9]{0,1}");
     lineEdit->setValidator(new QRegExpValidator(regExp, this));
 
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));

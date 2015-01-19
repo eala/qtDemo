@@ -144,7 +144,7 @@ QVariant Cell::evalFactor(const QString &str, int &pos) const{
             result = Invalid;
         ++pos;
     }else{
-        QRegExp regExp("[A-Za-z][1-9][0-9]{0, 2}");
+        QRegExp regExp("[A-Za-z][1-9][0-9]{0,2}");
         QString token;
 
         while(str[pos].isLetterOrNumber() || '.' == str[pos]){

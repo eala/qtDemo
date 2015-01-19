@@ -50,7 +50,8 @@ mainWindow::~mainWindow()
 }
 
 void mainWindow::createConnections(){
-    connect(newAction, SIGNAL(triggered()), this, SLOT(newFile())); // it should be managed as createConnects()
+    // file menu
+    connect(newAction, SIGNAL(triggered()), this, SLOT(newFile()));
     connect(openAction, SIGNAL(triggered()), this, SLOT(open()));
     connect(saveAction, SIGNAL(triggered()), this, SLOT(save()));
     connect(saveAsAction, SIGNAL(triggered()), this, SLOT(saveAs()));
@@ -61,7 +62,12 @@ void mainWindow::createConnections(){
     connect(pasteAction, SIGNAL(triggered()), mSpreadsheet, SLOT(paste()));
     connect(deleteAction, SIGNAL(triggered()), mSpreadsheet, SLOT(del()));
 
+    // sub-edit menu
+    connect(selectRowAction, SIGNAL(triggered()), mSpreadsheet, SLOT(selectCurrentRow()));
+    connect(selectColumnAction, SIGNAL(triggered()), mSpreadsheet, SLOT(selectCurrentColumn()));
+    connect(selectAllAction, SIGNAL(triggered()), mSpreadsheet, SLOT(selectAll()));
     connect(findAction, SIGNAL(triggered()), this, SLOT(find()));
+    connect(gotoCellAction, SIGNAL(triggered()), this, SLOT(goToCell()));
 
     // help menu
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
@@ -110,6 +116,7 @@ void mainWindow::createActions(){
 
     findAction = new QAction(tr("&Find"), this);
     findAction->setIcon(QIcon(":bin/images/find.png"));
+    findAction->setShortcut(QKeySequence::Find);
     findAction->setStatusTip(tr("Find contents"));
 
     gotoCellAction = new QAction(tr("&GotoCell"), this);
@@ -140,7 +147,6 @@ void mainWindow::createActions(){
     selectAllAction = new QAction(tr("&All"), this);
     selectAllAction->setShortcut(QKeySequence::SelectAll);
     selectAllAction->setToolTip(tr("Select all the cells in the spreadsheet"));
-    connect(selectAllAction, SIGNAL(triggered()), this, SLOT(close()));
 
     showGridAction = new QAction(tr("&Show Grid"), this);
     showGridAction->setCheckable(true);
