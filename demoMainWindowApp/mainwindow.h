@@ -26,7 +26,9 @@ private slots:
     bool save();
     bool saveAs();
     void openRecentFile();
+#if MDI
     void closeAllWindows();
+#endif
 
     void find();
     void goToCell();
@@ -59,21 +61,32 @@ protected:
 
 private:
     spreadsheet *mSpreadsheet;
+    QString curFile;
+
     findDialog *mFindDialog;
     QLabel *locationLabel;
     QLabel *formulaLabel;
-    static QStringList recentFiles; // all windows share the same recent files list
-    QString curFile;
+
 
     enum{ MaxRecentFiles = 5};
+#if MDI
+    static QStringList recentFiles; // all windows share the same recent files list
+    static QAction *recentFileActions[MaxRecentFiles];
+#else
+    QStringList recentFiles;
+    QAction *recentFileActions[MaxRecentFiles];
+#endif
+
+    // file menu
     QAction *newAction;
     QAction *openAction;
-    static QAction *recentFileActions[MaxRecentFiles];
     QAction *separatorAction;
     QAction *saveAction;
     QAction *saveAsAction;
     QAction *closeAction;
+#if MDI
     QAction *exitAction;
+#endif
 
     // edit menu
     QAction *cutAction;
@@ -97,7 +110,6 @@ private:
     // about menu
     QAction *aboutAction;
     QAction *aboutQtAction;
-
 
     QMenu *fileMenu;
     QMenu *editMenu;

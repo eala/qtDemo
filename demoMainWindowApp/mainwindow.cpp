@@ -15,8 +15,10 @@
 #include "sortdialog.h"
 #include "spreadsheet.h"
 
+#if MDI
 QStringList mainWindow::recentFiles;
 QAction *mainWindow::recentFileActions[mainWindow::MaxRecentFiles];
+#endif
 
 //mainWindow::mainWindow(QWidget *parent) : QMainWindow(parent)
 mainWindow::mainWindow()
@@ -71,11 +73,12 @@ void mainWindow::createActions(){
 
     openAction = new QAction(tr("&Open"), this);
     openAction->setIcon(QIcon(":bin/images/open.png"));
+    openAction->setShortcut(QKeySequence::Open);
     openAction->setStatusTip(tr("Open an existing spreadsheet file"));
 
     saveAction = new QAction(tr("&Save"), this);
     saveAction->setIcon(QIcon(":bin/images/save.png"));
-    newAction->setShortcut(QKeySequence::Save);
+    saveAction->setShortcut(QKeySequence::Save);
     saveAction->setStatusTip(tr("Save spreadsheet file"));
 
     saveAsAction = new QAction(tr("&Save as"), this);
@@ -122,11 +125,12 @@ void mainWindow::createActions(){
     closeAction->setToolTip(tr("Close this window"));
     connect(closeAction, SIGNAL(triggered()), this, SLOT(close()));
 
+#if MDI
     exitAction = new QAction(tr("E&xit"), this);
     exitAction->setShortcut(tr("Ctrl+Q"));
     exitAction->setToolTip(tr("Exit the application"));
     connect(exitAction, SIGNAL(triggered()), this, SLOT(closeAllWindows())); // there is no API closeAllWindows
-    //connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
+#endif
 
     selectAllAction = new QAction(tr("&All"), this);
     selectAllAction->setShortcut(QKeySequence::SelectAll);
@@ -157,12 +161,16 @@ void mainWindow::createMenus(){
     fileMenu->addAction(saveAsAction);
 
     separatorAction = fileMenu->addSeparator();
-    /*
+
     for(int i=0; i<MaxRecentFiles; ++i)
         fileMenu->addAction(recentFileActions[i]);
-    */
+
     fileMenu->addSeparator();
+#if MDI
     fileMenu->addAction(exitAction);
+#else
+    fileMenu->addAction(closeAction);
+#endif
 
     editMenu = menuBar()->addMenu(tr("&Edit"));
     editMenu->addAction(cutAction);
@@ -271,8 +279,10 @@ bool mainWindow::okToContinue(){
 void mainWindow::open(){
     if(okToContinue()){
         QString fileName = QFileDialog::getOpenFileName(this,
-                                                        tr("Open Spreadsheet"), ".",
-                                                        tr("Spreadsheet files (*.sp)"));
+                                    tr("Open Spreadsheet"),
+                                    //".",  // "": indicates last path, "." indicates working directory
+                                    "",
+                                    tr("Spreadsheet files (*.sp)"));
         if(!fileName.isEmpty()){
             loadFile(fileName);
         }
@@ -337,7 +347,7 @@ void mainWindow::setCurrentFile(const QString &fileName){
     curFile = fileName;
     setWindowModified(false);
     QString showName = tr("Untitled");
-    if(curFile.isEmpty()){
+    if(!curFile.isEmpty()){
         showName = strippedName(curFile);
         recentFiles.removeAll(curFile);
         recentFiles.prepend(curFile);
@@ -351,6 +361,7 @@ QString mainWindow::strippedName(const QString &fullFileName){
     return QFileInfo(fullFileName).fileName();
 }
 
+#if MDI
 void mainWindow::closeAllWindows(){
     foreach(QWidget *win, QApplication::topLevelWidgets()){
         if(mainWindow *mainWin = qobject_cast<mainWindow *>(win)){
@@ -359,6 +370,7 @@ void mainWindow::closeAllWindows(){
         }
     }
 }
+#endif
 
 void mainWindow::updateRecentFileActions(){
     QMutableStringListIterator it(recentFiles);
