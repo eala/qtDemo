@@ -52,7 +52,14 @@ void mainWindow::createConnections(){
     connect(saveAction, SIGNAL(triggered()), this, SLOT(save()));
     connect(saveAsAction, SIGNAL(triggered()), this, SLOT(saveAs()));
 
+    // edit menu
+    connect(cutAction, SIGNAL(triggered()), mSpreadsheet, SLOT(cut()));
+    connect(copyAction, SIGNAL(triggered()), mSpreadsheet, SLOT(copy()));
+    connect(pasteAction, SIGNAL(triggered()), mSpreadsheet, SLOT(paste()));
+
     connect(findAction, SIGNAL(triggered()), this, SLOT(find()));
+
+    // help menu
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
 }
 
@@ -68,20 +75,24 @@ void mainWindow::createActions(){
 
     saveAction = new QAction(tr("&Save"), this);
     saveAction->setIcon(QIcon(":bin/images/save.png"));
+    newAction->setShortcut(QKeySequence::Save);
     saveAction->setStatusTip(tr("Save spreadsheet file"));
 
     saveAsAction = new QAction(tr("&Save as"), this);
 
     cutAction = new QAction(tr("&Cut"), this);
     cutAction->setIcon(QIcon(":bin/images/cut.png"));
+    cutAction->setShortcut(QKeySequence::Cut);
     cutAction->setStatusTip(tr("Cut down contents into clipboard"));
 
     copyAction = new QAction(tr("&Copy"), this);
     copyAction->setIcon(QIcon(":bin/images/copy.png"));
+    copyAction->setShortcut(QKeySequence::Copy);
     copyAction->setStatusTip(tr("Copy contents into clipboard"));
 
     pasteAction = new QAction(tr("&Paste"), this);
     pasteAction->setIcon(QIcon(":bin/images/paste.png"));
+    pasteAction->setShortcut(QKeySequence::Paste);
     pasteAction->setStatusTip(tr("Paste contents from clipboard"));
 
     deleteAction = new QAction(tr("&Delete"), this);
