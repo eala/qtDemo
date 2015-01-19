@@ -9,5 +9,6 @@
         <file>bin/images/open.png</file>
         <file>bin/images/paste.png</file>
         <file>bin/images/save.png</file>
+        <file>bin/images/delete.png</file>
     </qresource>
 </RCC>

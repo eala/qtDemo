@@ -59,6 +59,7 @@ void mainWindow::createConnections(){
     connect(cutAction, SIGNAL(triggered()), mSpreadsheet, SLOT(cut()));
     connect(copyAction, SIGNAL(triggered()), mSpreadsheet, SLOT(copy()));
     connect(pasteAction, SIGNAL(triggered()), mSpreadsheet, SLOT(paste()));
+    connect(deleteAction, SIGNAL(triggered()), mSpreadsheet, SLOT(del()));
 
     connect(findAction, SIGNAL(triggered()), this, SLOT(find()));
 
@@ -100,6 +101,9 @@ void mainWindow::createActions(){
     pasteAction->setStatusTip(tr("Paste contents from clipboard"));
 
     deleteAction = new QAction(tr("&Delete"), this);
+    deleteAction->setIcon(QIcon(":bin/images/delete.png"));
+    deleteAction->setShortcut(QKeySequence::Delete);
+    deleteAction->setStatusTip(tr("Delete contents in cells"));
 
     selectRowAction = new QAction(tr("&Select Row"), this);
     selectColumnAction = new QAction(tr("&Select Column"), this);
@@ -216,6 +220,7 @@ void mainWindow::createToolBars(){
     editToolBar->addAction(cutAction);
     editToolBar->addAction(copyAction);
     editToolBar->addAction(pasteAction);
+    editToolBar->addAction(deleteAction);
 
     editToolBar->addSeparator();
 
