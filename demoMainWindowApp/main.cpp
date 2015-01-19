@@ -6,18 +6,13 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    //MainWindow w;
-    //w.show();
-    //findDialog findDlg;
-    //findDlg.show();
-    //gotoCellDialog *gotoCellDlg = new gotoCellDialog;
-    //gotoCellDlg->show();
-    //sortDialog *sortDlg = new sortDialog;
-    //sortDlg->setColumnRange('C', 'F');
-    //sortDlg->show();
+    QApplication app(argc, argv);
+#if MDI
     mainWindow *window = new mainWindow;
     window->show();
-
-    return a.exec();
+#else
+    mainWindow window;
+    window.show();
+#endif
+    return app.exec();
 }

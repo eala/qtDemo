@@ -15,6 +15,9 @@
 #include "sortdialog.h"
 #include "spreadsheet.h"
 
+QStringList mainWindow::recentFiles;
+QAction *mainWindow::recentFileActions[mainWindow::MaxRecentFiles];
+
 //mainWindow::mainWindow(QWidget *parent) : QMainWindow(parent)
 mainWindow::mainWindow()
 {
@@ -27,6 +30,7 @@ mainWindow::mainWindow()
     createContextMenu();
     createToolBars();
     createStatusBar();
+    createConnections();
 
     readSettings();
 
@@ -42,14 +46,21 @@ mainWindow::~mainWindow()
 
 }
 
+void mainWindow::createConnections(){
+    connect(newAction, SIGNAL(triggered()), this, SLOT(newFile())); // it should be managed as createConnects()
+    connect(openAction, SIGNAL(triggered()), this, SLOT(open()));
+    connect(saveAction, SIGNAL(triggered()), this, SLOT(save()));
+    connect(saveAsAction, SIGNAL(triggered()), this, SLOT(saveAs()));
+
+    connect(findAction, SIGNAL(triggered()), this, SLOT(find()));
+}
+
 void mainWindow::createActions(){
     newAction = new QAction(tr("&New"), this);
-    newAction->setIcon(QIcon(":/images/new.png"));
+    newAction->setIcon(QIcon(":bin/images/new.png"));
     newAction->setShortcut(QKeySequence::New);
     newAction->setStatusTip(tr("Create a new spreadsheet file"));
-    connect(newAction, SIGNAL(triggered()), this, SLOT(newFile())); // it should be managed as createConnects()
 
-    // un-implement
     openAction = new QAction(tr("&Open"), this);
     saveAction = new QAction(tr("&Save"), this);
     saveAsAction = new QAction(tr("&Save as"), this);
@@ -84,8 +95,8 @@ void mainWindow::createActions(){
     exitAction = new QAction(tr("E&xit"), this);
     exitAction->setShortcut(tr("Ctrl+Q"));
     exitAction->setToolTip(tr("Exit the application"));
-    //connect(exitAction, SIGNAL(triggered()), this, SLOT(closeAllWindows())); // there is no API closeAllWindows
-    connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
+    connect(exitAction, SIGNAL(triggered()), this, SLOT(closeAllWindows())); // there is no API closeAllWindows
+    //connect(exitAction, SIGNAL(triggered()), this, SLOT(close()));
 
     selectAllAction = new QAction(tr("&All"), this);
     selectAllAction->setShortcut(QKeySequence::SelectAll);
@@ -180,9 +191,9 @@ void mainWindow::createStatusBar(){
     statusBar()->addWidget(locationLabel);
     statusBar()->addWidget(formulaLabel, 1);
 
-    //connect(mSpreadsheet, SIGNAL(currentCellChanged(int, int, int, int)),
-    //        this, SLOT(updateStatusBar()));
-    //connect(mSpreadsheet, SIGNAL(modified()), this, SLOT(spreadsheetModified()));
+    connect(mSpreadsheet, SIGNAL(currentCellChanged(int, int, int, int)),
+            this, SLOT(updateStatusBar()));
+    connect(mSpreadsheet, SIGNAL(modified()), this, SLOT(spreadsheetModified()));
     updateStatusBar();
 }
 
@@ -197,7 +208,7 @@ void mainWindow::spreadsheetModified(){
 }
 
 void mainWindow::newFile(){
-#if 1
+#if MDI
     mainWindow *mainWin = new mainWindow;
     mainWin->show();
 #else
@@ -306,8 +317,16 @@ QString mainWindow::strippedName(const QString &fullFileName){
     return QFileInfo(fullFileName).fileName();
 }
 
+void mainWindow::closeAllWindows(){
+    foreach(QWidget *win, QApplication::topLevelWidgets()){
+        if(mainWindow *mainWin = qobject_cast<mainWindow *>(win)){
+            mainWin->updateRecentFileActions();
+            mainWin->close();
+        }
+    }
+}
+
 void mainWindow::updateRecentFileActions(){
-#if 0
     QMutableStringListIterator it(recentFiles);
     while(it.hasNext()){
         if(!QFile::exists(it.next()))
@@ -327,7 +346,6 @@ void mainWindow::updateRecentFileActions(){
         }
     }
     separatorAction->setVisible(!recentFiles.isEmpty());
-#endif
 }
 
 void mainWindow::openRecentFile(){

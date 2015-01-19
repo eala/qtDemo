@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+// multiple document interface
+#define MDI 0
+
 class QAction;
 class QLabel;
 class findDialog;
@@ -23,6 +26,7 @@ private slots:
     bool save();
     bool saveAs();
     void openRecentFile();
+    void closeAllWindows();
 
     void find();
     void goToCell();
@@ -38,6 +42,7 @@ private:
     void createContextMenu();
     void createToolBars();
     void createStatusBar();
+    void createConnections();
     void readSettings();
     void writeSettings();
     bool okToContinue();
@@ -48,6 +53,7 @@ private:
     void displayStatusBar(const QString &str);
     QString strippedName(const QString &fullFileName);
 
+
 protected:
     void closeEvent(QCloseEvent *event);
 
@@ -56,13 +62,13 @@ private:
     findDialog *mFindDialog;
     QLabel *locationLabel;
     QLabel *formulaLabel;
-    QStringList recentFiles;
+    static QStringList recentFiles; // all windows share the same recent files list
     QString curFile;
 
     enum{ MaxRecentFiles = 5};
     QAction *newAction;
     QAction *openAction;
-    QAction *recentFileActions[MaxRecentFiles];
+    static QAction *recentFileActions[MaxRecentFiles];
     QAction *separatorAction;
     QAction *saveAction;
     QAction *saveAsAction;
