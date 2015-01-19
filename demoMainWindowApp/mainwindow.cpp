@@ -39,8 +39,9 @@ mainWindow::mainWindow()
     mFindDialog = 0;
     setWindowIcon(QIcon(":bin/images/icon.png"));
     setCurrentFile("");
-
+#if MDI // do not use in SDI environment, it will double-free
     setAttribute(Qt::WA_DeleteOnClose);
+#endif
 }
 
 mainWindow::~mainWindow()
