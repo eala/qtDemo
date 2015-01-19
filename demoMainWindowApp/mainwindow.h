@@ -96,13 +96,13 @@ private:
 
     // about menu
     QAction *aboutAction;
-    QAction *myAboutQtAction;
+    QAction *aboutQtAction;
 
 
     QMenu *fileMenu;
     QMenu *editMenu;
     QMenu *toolsMenu;
-    QMenu *myHelpMenu;
+    QMenu *helpMenu;
     QMenu *selectSubMenu;
 
     QToolBar *fileToolBar;

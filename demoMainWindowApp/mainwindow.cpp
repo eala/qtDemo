@@ -53,6 +53,7 @@ void mainWindow::createConnections(){
     connect(saveAsAction, SIGNAL(triggered()), this, SLOT(saveAs()));
 
     connect(findAction, SIGNAL(triggered()), this, SLOT(find()));
+    connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
 }
 
 void mainWindow::createActions(){
@@ -98,7 +99,6 @@ void mainWindow::createActions(){
 
     autoRecalcAction = new QAction(tr("&AutoRecalc"), this);
     sortAction = new QAction(tr("&Sort"), this);
-    aboutAction = new QAction(tr("cannot about"), this);
 
     for(int i=0; i<MaxRecentFiles; ++i){
         recentFileActions[i] = new QAction(this);
@@ -129,9 +129,13 @@ void mainWindow::createActions(){
     showGridAction->setToolTip(tr("Show or hide the spreadsheet's grid"));
     connect(showGridAction, SIGNAL(toggled(bool)), mSpreadsheet, SLOT(setShowGrid(bool)));
 
-    myAboutQtAction = new QAction(tr("About &Qt"), this);
-    myAboutQtAction->setStatusTip(tr("Show the Qt library's About box"));
-    connect(myAboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+    // help menu
+    aboutAction = new QAction(tr("About"), this);
+    aboutAction->setStatusTip(tr("About this application"));
+
+    aboutQtAction = new QAction(tr("About &Qt"), this);
+    aboutQtAction->setStatusTip(tr("Show the Qt library's About box"));
+    connect(aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 }
 
 void mainWindow::createMenus(){
@@ -170,9 +174,9 @@ void mainWindow::createMenus(){
 
     menuBar()->addSeparator();
 
-    myHelpMenu = menuBar()->addMenu(tr("&Help"));
-    myHelpMenu->addAction(aboutAction);
-    myHelpMenu->addAction(myAboutQtAction);
+    helpMenu = menuBar()->addMenu(tr("&Help"));
+    helpMenu->addAction(aboutAction);
+    helpMenu->addAction(aboutQtAction);
 }
 
 void mainWindow::createContextMenu(){
