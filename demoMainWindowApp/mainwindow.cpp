@@ -35,7 +35,7 @@ mainWindow::mainWindow()
     readSettings();
 
     mFindDialog = 0;
-    setWindowIcon(QIcon(":/images/icon.png"));
+    setWindowIcon(QIcon(":bin/images/icon.png"));
     setCurrentFile("");
 
     setAttribute(Qt::WA_DeleteOnClose);
@@ -62,30 +62,49 @@ void mainWindow::createActions(){
     newAction->setStatusTip(tr("Create a new spreadsheet file"));
 
     openAction = new QAction(tr("&Open"), this);
+    openAction->setIcon(QIcon(":bin/images/open.png"));
+    openAction->setStatusTip(tr("Open an existing spreadsheet file"));
+
     saveAction = new QAction(tr("&Save"), this);
+    saveAction->setIcon(QIcon(":bin/images/save.png"));
+    saveAction->setStatusTip(tr("Save spreadsheet file"));
+
     saveAsAction = new QAction(tr("&Save as"), this);
 
     cutAction = new QAction(tr("&Cut"), this);
+    cutAction->setIcon(QIcon(":bin/images/cut.png"));
+    cutAction->setStatusTip(tr("Cut down contents into clipboard"));
+
     copyAction = new QAction(tr("&Copy"), this);
+    copyAction->setIcon(QIcon(":bin/images/copy.png"));
+    copyAction->setStatusTip(tr("Copy contents into clipboard"));
+
     pasteAction = new QAction(tr("&Paste"), this);
+    pasteAction->setIcon(QIcon(":bin/images/paste.png"));
+    pasteAction->setStatusTip(tr("Paste contents from clipboard"));
+
     deleteAction = new QAction(tr("&Delete"), this);
 
     selectRowAction = new QAction(tr("&Select Row"), this);
     selectColumnAction = new QAction(tr("&Select Column"), this);
 
     findAction = new QAction(tr("&Find"), this);
+    findAction->setIcon(QIcon(":bin/images/find.png"));
+    findAction->setStatusTip(tr("Find contents"));
+
     gotoCellAction = new QAction(tr("&GotoCell"), this);
+    gotoCellAction->setIcon(QIcon(":bin/images/gotocell.png"));
+    gotoCellAction->setStatusTip(tr("Go to cell (row, column)"));
+
     autoRecalcAction = new QAction(tr("&AutoRecalc"), this);
     sortAction = new QAction(tr("&Sort"), this);
-    myAboutAction = new QAction(tr("cannot about"), this);
-
+    aboutAction = new QAction(tr("cannot about"), this);
 
     for(int i=0; i<MaxRecentFiles; ++i){
         recentFileActions[i] = new QAction(this);
         recentFileActions[i]->setVisible(false);
         connect(recentFileActions[i], SIGNAL(triggered()), this, SLOT(openRecentFile()));
     }
-
 
     closeAction = new QAction(tr("&Close"), this);
     closeAction->setShortcut(QKeySequence::Close);
@@ -152,7 +171,7 @@ void mainWindow::createMenus(){
     menuBar()->addSeparator();
 
     myHelpMenu = menuBar()->addMenu(tr("&Help"));
-    myHelpMenu->addAction(myAboutAction);
+    myHelpMenu->addAction(aboutAction);
     myHelpMenu->addAction(myAboutQtAction);
 }
 

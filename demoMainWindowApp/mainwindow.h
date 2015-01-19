@@ -95,7 +95,7 @@ private:
     QAction *showGridAction;
 
     // about menu
-    QAction *myAboutAction;
+    QAction *aboutAction;
     QAction *myAboutQtAction;
 
 
