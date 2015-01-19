@@ -1,6 +1,13 @@
 <RCC>
     <qresource>
+        <file>bin/images/copy.png</file>
+        <file>bin/images/cut.png</file>
+        <file>bin/images/find.png</file>
+        <file>bin/images/gotocell.png</file>
         <file>bin/images/icon.png</file>
         <file>bin/images/new.png</file>
+        <file>bin/images/open.png</file>
+        <file>bin/images/paste.png</file>
+        <file>bin/images/save.png</file>
     </qresource>
 </RCC>
