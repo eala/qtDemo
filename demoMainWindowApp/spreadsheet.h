@@ -39,6 +39,7 @@ public slots:
     void selectCurrentColumn();
     void recalculate();
     void setAutoRecalculate(bool recalc);
+    bool isAutoRecalculate(){ return autoRecalc;}
     void findNext(const QString &str, Qt::CaseSensitivity cs);
     void findPrevious(const QString &str, Qt::CaseSensitivity cs);
 

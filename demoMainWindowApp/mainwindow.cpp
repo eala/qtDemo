@@ -69,11 +69,17 @@ void mainWindow::createConnections(){
     connect(findAction, SIGNAL(triggered()), this, SLOT(find()));
     connect(gotoCellAction, SIGNAL(triggered()), this, SLOT(goToCell()));
 
+    // tool menu
+    connect(showGridAction, SIGNAL(toggled(bool)), mSpreadsheet, SLOT(setShowGrid(bool)));
+    connect(autoRecalcAction, SIGNAL(toggled(bool)), mSpreadsheet, SLOT(setAutoRecalculate(bool)));
+    connect(sortAction, SIGNAL(triggered()), mSpreadsheet, SLOT(sort(const SpreadsheetCompare &)));
+
     // help menu
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
 }
 
 void mainWindow::createActions(){
+    // file menus
     newAction = new QAction(tr("&New"), this);
     newAction->setIcon(QIcon(":bin/images/new.png"));
     newAction->setShortcut(QKeySequence::New);
@@ -91,6 +97,25 @@ void mainWindow::createActions(){
 
     saveAsAction = new QAction(tr("&Save as"), this);
 
+    for(int i=0; i<MaxRecentFiles; ++i){
+        recentFileActions[i] = new QAction(this);
+        recentFileActions[i]->setVisible(false);
+        connect(recentFileActions[i], SIGNAL(triggered()), this, SLOT(openRecentFile()));
+    }
+
+    closeAction = new QAction(tr("&Close"), this);
+    closeAction->setShortcut(QKeySequence::Close);
+    closeAction->setToolTip(tr("Close this window"));
+    connect(closeAction, SIGNAL(triggered()), this, SLOT(close()));
+
+#if MDI
+    exitAction = new QAction(tr("E&xit"), this);
+    exitAction->setShortcut(tr("Ctrl+Q"));
+    exitAction->setToolTip(tr("Exit the application"));
+    connect(exitAction, SIGNAL(triggered()), this, SLOT(closeAllWindows())); // there is no API closeAllWindows
+#endif
+
+    // edit menus
     cutAction = new QAction(tr("&Cut"), this);
     cutAction->setIcon(QIcon(":bin/images/cut.png"));
     cutAction->setShortcut(QKeySequence::Cut);
@@ -113,6 +138,9 @@ void mainWindow::createActions(){
 
     selectRowAction = new QAction(tr("&Select Row"), this);
     selectColumnAction = new QAction(tr("&Select Column"), this);
+    selectAllAction = new QAction(tr("&All"), this);
+    selectAllAction->setShortcut(QKeySequence::SelectAll);
+    selectAllAction->setToolTip(tr("Select all the cells in the spreadsheet"));
 
     findAction = new QAction(tr("&Find"), this);
     findAction->setIcon(QIcon(":bin/images/find.png"));
@@ -123,37 +151,20 @@ void mainWindow::createActions(){
     gotoCellAction->setIcon(QIcon(":bin/images/gotocell.png"));
     gotoCellAction->setStatusTip(tr("Go to cell (row, column)"));
 
-    autoRecalcAction = new QAction(tr("&AutoRecalc"), this);
+    // tool menu
     sortAction = new QAction(tr("&Sort"), this);
+    sortAction->setToolTip(tr("Sort the selection cells"));
 
-    for(int i=0; i<MaxRecentFiles; ++i){
-        recentFileActions[i] = new QAction(this);
-        recentFileActions[i]->setVisible(false);
-        connect(recentFileActions[i], SIGNAL(triggered()), this, SLOT(openRecentFile()));
-    }
-
-    closeAction = new QAction(tr("&Close"), this);
-    closeAction->setShortcut(QKeySequence::Close);
-    closeAction->setToolTip(tr("Close this window"));
-    connect(closeAction, SIGNAL(triggered()), this, SLOT(close()));
-
-#if MDI
-    exitAction = new QAction(tr("E&xit"), this);
-    exitAction->setShortcut(tr("Ctrl+Q"));
-    exitAction->setToolTip(tr("Exit the application"));
-    connect(exitAction, SIGNAL(triggered()), this, SLOT(closeAllWindows())); // there is no API closeAllWindows
-#endif
-
-    selectAllAction = new QAction(tr("&All"), this);
-    selectAllAction->setShortcut(QKeySequence::SelectAll);
-    selectAllAction->setToolTip(tr("Select all the cells in the spreadsheet"));
+    autoRecalcAction = new QAction(tr("&AutoRecalc"), this);
+    autoRecalcAction->setCheckable(true);
+    autoRecalcAction->setChecked(mSpreadsheet->isAutoRecalculate());
+    autoRecalcAction->setToolTip(tr("Set spreadsheet auto-recalculate"));
 
     showGridAction = new QAction(tr("&Show Grid"), this);
     showGridAction->setCheckable(true);
     showGridAction->setChecked(mSpreadsheet->showGrid());
-    showGridAction->setShortcut(QKeySequence::SelectAll);
     showGridAction->setToolTip(tr("Show or hide the spreadsheet's grid"));
-    connect(showGridAction, SIGNAL(toggled(bool)), mSpreadsheet, SLOT(setShowGrid(bool)));
+
 
     // help menu
     aboutAction = new QAction(tr("About"), this);
@@ -201,6 +212,7 @@ void mainWindow::createMenus(){
     toolsMenu = menuBar()->addMenu(tr("&Tools"));
     toolsMenu->addAction(autoRecalcAction);
     toolsMenu->addAction(sortAction);
+    toolsMenu->addAction(showGridAction);
 
     menuBar()->addSeparator();
 
