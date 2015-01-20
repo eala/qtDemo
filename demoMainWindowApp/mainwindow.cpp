@@ -72,7 +72,7 @@ void mainWindow::createConnections(){
     // tool menu
     connect(showGridAction, SIGNAL(toggled(bool)), mSpreadsheet, SLOT(setShowGrid(bool)));
     connect(autoRecalcAction, SIGNAL(toggled(bool)), mSpreadsheet, SLOT(setAutoRecalculate(bool)));
-    connect(sortAction, SIGNAL(triggered()), mSpreadsheet, SLOT(sort(const SpreadsheetCompare &)));
+    connect(sortAction, SIGNAL(triggered()), this, SLOT(sort()));
 
     // help menu
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(about()));
@@ -463,9 +463,9 @@ void mainWindow::readSettings(){
 }
 
 void mainWindow::sort(){
-#if 0
+#if 1
     sortDialog dialog(this);
-    QTableWidgetSelectionRange range = mSpreadsheet->selectRange();
+    QTableWidgetSelectionRange range = mSpreadsheet->selectedRange();
     dialog.setColumnRange('A' + range.leftColumn(),
                           'A' + range.rightColumn());
     if(dialog.exec()){
@@ -478,10 +478,11 @@ void mainWindow::sort(){
         compare.ascending[2] = (0 == dialog.tertiaryColumnCombo->currentIndex());
         mSpreadsheet->sort(compare);
     }
-#endif
+#else
     sortDialog dialog(this);
     dialog.setSpreadsheet(mSpreadsheet);
     dialog.exec();
+#endif
 }
 
 void mainWindow::about(){

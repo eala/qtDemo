@@ -18,7 +18,7 @@ public:
     bool autoRecalculate() const { return autoRecalc;}
     QString currentLocation() const;
     QString currentFormula() const;
-    QTableWidgetSelectionRange selectRange() const;
+    QTableWidgetSelectionRange selectedRange() const;
     void clear();
     bool readFile(const QString &fileName);
     bool writeFile(const QString &fileName);
@@ -49,7 +49,6 @@ private:
     QString text(int row, int column) const;
     QString formula(int row, int column) const;
     void setFormula(int row, int column, const QString &formula);
-    QTableWidgetSelectionRange selectedRange() const;
 
     bool autoRecalc;
 };

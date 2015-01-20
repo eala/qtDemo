@@ -142,11 +142,6 @@ void spreadsheet::sort(const SpreadsheetCompare &compare){
     somethingChanged();
 }
 
-QTableWidgetSelectionRange spreadsheet::selectRange() const{
-    QTableWidgetSelectionRange range;
-    return range;
-}
-
 bool spreadsheet::writeFile(const QString &fileName){
     QFile file(fileName);
     if(!file.open(QIODevice::WriteOnly)){
