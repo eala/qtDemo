@@ -473,9 +473,9 @@ void mainWindow::sort(){
         compare.keys[0] = dialog.primaryColumnCombo->currentIndex();
         compare.keys[1] = dialog.secondaryColumnCombo->currentIndex()-1;
         compare.keys[2] = dialog.tertiaryColumnCombo->currentIndex()-1;
-        compare.ascending[0] = (0 == dialog.primaryColumnCombo->currentIndex());
-        compare.ascending[1] = (0 == dialog.secondaryColumnCombo->currentIndex());
-        compare.ascending[2] = (0 == dialog.tertiaryColumnCombo->currentIndex());
+        compare.ascending[0] = (0 == dialog.primaryOrderCombo->currentIndex());
+        compare.ascending[1] = (0 == dialog.secondaryOrderCombo->currentIndex());
+        compare.ascending[2] = (0 == dialog.tertiaryOrderCombo->currentIndex());
         mSpreadsheet->sort(compare);
     }
 #else
